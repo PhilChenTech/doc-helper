@@ -102,16 +102,24 @@ components:
         - password
       properties:
         username:
+          description: 使用者名稱
           type: string
           example: johndoe
+          minLength: 2
+          maxLength: 20
         email:
+          description: 電子郵件
           type: string
           format: email
           example: johndoe@example.com
+          maxLength: 255
         password:
+          description: 密碼
           type: string
           format: password
           example: mysecret123
+          minLength: 8
+          maxLength: 50
 
     LoginRequest:
       type: object
@@ -120,13 +128,18 @@ components:
         - password
       properties:
         email:
+          description: 電子郵件
           type: string
           format: email
           example: johndoe@example.com
+          maxLength: 255
         password:
+          description: 密碼
           type: string
           format: password
           example: mysecret123
+          minLength: 8
+          maxLength: 50
 
     LoginResponse:
       type: object
@@ -140,15 +153,22 @@ components:
       type: object
       properties:
         id:
+          description: 使用者 ID
           type: integer
           example: 1
         username:
+          description: 使用者名稱
           type: string
           example: johndoe
+          minLength: 2
+          maxLength: 20
         email:
+          description: 電子郵件
           type: string
           example: johndoe@example.com
+          maxLength: 255
         createdAt:
+          description: 建立時間
           type: string
           format: date-time
           example: 2025-01-01T00:00:00Z
@@ -157,8 +177,13 @@ components:
       type: object
       properties:
         username:
+          description: 使用者名稱
           type: string
           example: newname
+          minLength: 2
+          maxLength: 20
         email:
+          description: 電子郵件
           type: string
           example: newemail@example.com
+          maxLength: 255

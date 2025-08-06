@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class OpenApiToCsvConverter {
 
-    private static final String OPENAPI_FILE_PATH = "src/main/resources/member-system-openapi.yaml";
+    private static final String OPENAPI_FILE_PATH = "member-system-openapi.yaml";
     // Key: API Path, Value: HTTP Method
     private static final Map<String, String> API_ENDPOINTS = Map.of(
             "/auth/register", "post",
