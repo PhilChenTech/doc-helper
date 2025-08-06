@@ -24,6 +24,14 @@ public class OpenApiUtilTests {
     }
 
     @Test
+    void test() {
+        Schema schema = openApiUtil.getRequestSchema("/auth/register", PathItem.HttpMethod.POST);
+    System.out.println(schema);
+//        assertNotNull(schema);
+    }
+
+
+    @Test
     void testGetRequestSchema() {
         Schema schema = openApiUtil.getRequestSchema("/auth/register", PathItem.HttpMethod.POST);
         assertNotNull(schema);
