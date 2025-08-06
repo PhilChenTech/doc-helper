@@ -25,8 +25,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'io.swagger.parser.v3:swagger-parser:2.1.9'
-    implementation 'org.apache.commons:commons-csv:1.10.0'
+    implementation 'io.swagger.parser.v3:swagger-parser:2.1.31'
+    implementation 'org.apache.commons:commons-csv:1.14.1'
+    implementation 'org.yaml:snakeyaml:2.4'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -9,15 +9,15 @@ import java.util.List;
 @Builder
 public class Payload {
 
-    private List<Field> fields;
+  private List<Field> fields;
 
-    @Data
-    @Builder
-    public static class Field {
-        private String name;
-        private String type;
-        private String description;
-        private Object example;
-        private boolean required;
-    }
+  @Data
+  @Builder
+  public static class Field {
+    private String name;
+    private String type;
+    private String description;
+    private Object example;
+    private boolean required;
+  }
 }
