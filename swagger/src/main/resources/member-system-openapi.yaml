@@ -1,0 +1,164 @@
+
+openapi: 3.0.0
+info:
+  title: 會員系統 API
+  version: 1.0.0
+  description: 提供使用者註冊、登入、查詢與更新會員資料的 RESTful API
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /auth/register:
+    post:
+      summary: 使用者註冊
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: 註冊成功
+        '400':
+          description: 請求格式錯誤或帳號已存在
+
+  /auth/login:
+    post:
+      summary: 使用者登入
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: 登入成功，回傳 JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: 登入失敗
+
+  /user/profile:
+    get:
+      summary: 取得目前登入的使用者資料
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 使用者資料
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: 未授權
+
+    put:
+      summary: 更新使用者資料
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: 更新成功
+        '400':
+          description: 更新資料有誤
+        '401':
+          description: 未授權
+
+    delete:
+      summary: 刪除帳號
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: 刪除成功
+        '401':
+          description: 未授權
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          format: email
+          example: johndoe@example.com
+        password:
+          type: string
+          format: password
+          example: mysecret123
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: johndoe@example.com
+        password:
+          type: string
+          format: password
+          example: mysecret123
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token
+          example: eyJhbGciOiJIUzI1NiIsInR...
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          example: johndoe@example.com
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-01-01T00:00:00Z
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: newname
+        email:
+          type: string
+          example: newemail@example.com
