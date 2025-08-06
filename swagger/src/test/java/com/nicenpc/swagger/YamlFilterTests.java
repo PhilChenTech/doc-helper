@@ -1,6 +1,6 @@
 package com.nicenpc.swagger;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.nicenpc.swagger.tool.YamlFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

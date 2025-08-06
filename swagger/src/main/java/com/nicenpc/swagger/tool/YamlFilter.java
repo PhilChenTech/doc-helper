@@ -1,4 +1,4 @@
-package com.nicenpc.swagger;
+package com.nicenpc.swagger.tool;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;

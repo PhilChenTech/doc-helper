@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: 5-Level Nested API Example
+  version: 1.0.0
+  description: 一個展示五層巢狀結構的簡單 Swagger API
+
+paths:
+  /user/profile:
+    get:
+      summary: 取得使用者個人檔案資訊（含五層結構）
+      description: 這個 API 會回傳一個包含使用者資料、聯絡方式、地址與國家等五層巢狀的 JSON 結構。
+      responses:
+        '200':
+          description: 成功取得使用者檔案資料
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+
+components:
+  schemas:
+    UserProfile:
+      type: object
+      description: API 回傳的頂層物件，包含使用者資訊。
+      required:
+        - user
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      description: 使用者基本資料
+      required:
+        - id
+        - name
+        - contact
+      properties:
+        id:
+          type: string
+          description: 使用者唯一識別碼，例如 UUID
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          description: 使用者全名
+          example: "王小明"
+        contact:
+          $ref: '#/components/schemas/Contact'
+
+    Contact:
+      type: object
+      description: 使用者聯絡方式
+      required:
+        - email
+        - address
+      properties:
+        email:
+          type: string
+          format: email
+          description: 使用者電子郵件地址
+          example: "user@example.com"
+        address:
+          $ref: '#/components/schemas/Address'
+
+    Address:
+      type: object
+      description: 使用者地址資訊
+      required:
+        - street
+        - city
+        - country
+      properties:
+        street:
+          type: string
+          description: 街道名稱
+          example: "信義路五段7號"
+        city:
+          type: string
+          description: 城市名稱
+          example: "台北市"
+        country:
+          $ref: '#/components/schemas/Country'
+
+    Country:
+      type: object
+      description: 國家資訊
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: string
+          description: 國家代碼（ISO 3166-1 alpha-2）
+          example: "TW"
+        name:
+          type: string
+          description: 國家名稱
+          example: "台灣"
