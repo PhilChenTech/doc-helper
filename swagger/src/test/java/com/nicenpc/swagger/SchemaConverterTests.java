@@ -1,5 +1,6 @@
 package com.nicenpc.swagger;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.nicenpc.swagger.model.Payload;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
@@ -24,6 +25,7 @@ public class SchemaConverterTests {
         Schema schema = openApiUtil.getRequestSchema("/auth/register", PathItem.HttpMethod.POST);
         Payload payload = schemaConverter.toPayload(schema);
 
+    System.out.println("payload = " +payload);
         assertNotNull(payload);
         assertEquals(3, payload.getFields().size());
 
