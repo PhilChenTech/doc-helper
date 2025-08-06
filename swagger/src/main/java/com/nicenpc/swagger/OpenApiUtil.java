@@ -66,14 +66,29 @@ public class OpenApiUtil {
   }
 
   private Schema resolveSchema(Schema schema) {
-    if (schema != null && schema.get$ref() != null) {
+    if (schema == null) {
+      return null;
+    }
+
+    if (schema.get$ref() != null) {
       String ref = schema.get$ref();
       String[] parts = ref.split("/");
       String schemaName = parts[parts.length - 1];
-      return openAPI.getComponents().getSchemas().get(schemaName);
+      Schema resolvedSchema = openAPI.getComponents().getSchemas().get(schemaName);
+      return resolveSchema(resolvedSchema); // 遞迴解析
     }
+
+    // 處理嵌套的屬性
+    if (schema.getProperties() != null) {
+      Map<String, Schema> properties = schema.getProperties();
+      for (Map.Entry<String, Schema> entry : properties.entrySet()) {
+        properties.put(entry.getKey(), resolveSchema(entry.getValue())); // 遞迴解析屬性
+      }
+    }
+
     return schema;
   }
+
 
   private Operation getOperation(PathItem pathItem, PathItem.HttpMethod httpMethod) {
     switch (httpMethod) {

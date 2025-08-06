@@ -19,12 +19,12 @@ public class OpenApiUtilTests {
 
     @BeforeEach
     void setUp() {
-        openApiUtil = new OpenApiUtil("src/main/resources/member-system-openapi.yaml");
+        openApiUtil = new OpenApiUtil("src/main/resources/5level.yaml");
     }
 
     @Test
     void test() {
-        Schema schema = openApiUtil.getRequestSchema("/auth/register", PathItem.HttpMethod.POST);
+        Schema schema = openApiUtil.getResponseSchema("/user/profile", PathItem.HttpMethod.GET,"200");
     System.out.println(schema);
 //        assertNotNull(schema);
     }
