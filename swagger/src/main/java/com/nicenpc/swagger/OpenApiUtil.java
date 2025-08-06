@@ -15,7 +15,7 @@ public class OpenApiUtil {
     public OpenApiUtil(String yamlFilePath) {
         System.setProperty("maxYamlAliasesForCollections", "200");
         System.setProperty("maxYamlDepth", "4000");
-      System.setProperty("maxYamlCodePoints", 1024*1024*10 + ""); // 10MB
+      System.setProperty("maxYamlCodePoints", 1024*1024*20 + ""); // 10MB
 
         this.openAPI = new OpenAPIV3Parser().read(yamlFilePath);
     }
