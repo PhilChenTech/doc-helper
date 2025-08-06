@@ -31,7 +31,8 @@ public class OpenApiUtil {
             return null;
         }
 
-        return operation.getRequestBody().getContent().values().iterator().next().getSchema();
+        Schema schema = operation.getRequestBody().getContent().values().iterator().next().getSchema();
+        return resolveSchema(schema);
     }
 
     public Schema getResponseSchema(String apiPath, PathItem.HttpMethod httpMethod, String statusCode) {
@@ -45,7 +46,18 @@ public class OpenApiUtil {
             return null;
         }
 
-        return operation.getResponses().get(statusCode).getContent().values().iterator().next().getSchema();
+        Schema schema = operation.getResponses().get(statusCode).getContent().values().iterator().next().getSchema();
+        return resolveSchema(schema);
+    }
+
+    private Schema resolveSchema(Schema schema) {
+        if (schema != null && schema.get$ref() != null) {
+            String ref = schema.get$ref();
+            String[] parts = ref.split("/");
+            String schemaName = parts[parts.length - 1];
+            return openAPI.getComponents().getSchemas().get(schemaName);
+        }
+        return schema;
     }
 
     private Operation getOperation(PathItem pathItem, PathItem.HttpMethod httpMethod) {
