@@ -1,6 +1,7 @@
 package com.nicenpc.swagger;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -15,7 +16,9 @@ public class YamlFilter {
 
     public YamlFilter(String yamlFilePath) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(yamlFilePath);
-        Yaml yaml = new Yaml();
+        LoaderOptions options = new LoaderOptions();
+        options.setCodePointLimit(20 * 1024 * 1024); // 10MB
+        Yaml yaml = new Yaml(options);
         this.data = yaml.load(inputStream);
     }
 
