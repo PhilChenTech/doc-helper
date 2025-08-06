@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,15 +21,14 @@ class YamlFilterTests {
   }
 
   @Test
-  void print() {
+  void print() throws IOException {
     // Arrange
     String apiPath = "/resource/0";
     String httpMethod = "get";
 
     // Act
     Map<String, Object> filteredData = yamlFilter.filterByApi(apiPath, httpMethod);
-    String resultYaml = yamlFilter.toYaml(filteredData);
-    System.out.println(resultYaml);
+    yamlFilter.writeFilteredYaml(filteredData,"data.yaml");
   }
 
   @Test

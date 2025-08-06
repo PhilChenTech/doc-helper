@@ -6,8 +6,11 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class YamlFilter {
@@ -65,6 +68,52 @@ public class YamlFilter {
         return filteredData;
     }
 
+    /**
+     * 根據多個 API 路徑與方法過濾，產生新的 YAML 結構
+     * @param apiMethods 欲保留的 API 路徑與方法，格式為 Map<apiPath, List<httpMethod>>
+     * @return 過濾後的 YAML 結構
+     */
+    public Map<String, Object> filterByApis(Map<String, List<String>> apiMethods) {
+        if (data == null || !data.containsKey("paths")) {
+            return null;
+        }
+
+        Map<String, Object> paths = (Map<String, Object>) data.get("paths");
+        Map<String, Object> newPaths = new LinkedHashMap<>();
+
+        for (Map.Entry<String, java.util.List<String>> entry : apiMethods.entrySet()) {
+            String apiPath = entry.getKey();
+            if (!paths.containsKey(apiPath)) continue;
+            Map<String, Object> pathItem = (Map<String, Object>) paths.get(apiPath);
+
+            Map<String, Object> newPathItem = new LinkedHashMap<>();
+            for (String method : entry.getValue()) {
+                String methodKey = method.toLowerCase();
+                if (pathItem.containsKey(methodKey)) {
+                    newPathItem.put(methodKey, pathItem.get(methodKey));
+                }
+            }
+            if (!newPathItem.isEmpty()) {
+                newPaths.put(apiPath, newPathItem);
+            }
+        }
+
+        if (newPaths.isEmpty()) return null;
+
+        Map<String, Object> filteredData = new LinkedHashMap<>();
+        filteredData.put("openapi", data.get("openapi"));
+        filteredData.put("info", data.get("info"));
+        if (data.containsKey("servers")) {
+            filteredData.put("servers", data.get("servers"));
+        }
+        if (data.containsKey("components")) {
+            filteredData.put("components", data.get("components"));
+        }
+        filteredData.put("paths", newPaths);
+
+        return filteredData;
+    }
+
     public String toYaml(Map<String, Object> filteredData) {
         if (filteredData == null) {
             return "";
@@ -76,5 +125,19 @@ public class YamlFilter {
 
         Yaml yaml = new Yaml(options);
         return yaml.dump(filteredData);
+    }
+
+    /**
+     * 將過濾後的 YAML 結構寫入指定檔案
+     * @param filteredData 過濾後的 YAML 結構
+     * @param outputFilePath 輸出檔案路徑
+     * @throws IOException 寫檔失敗時拋出
+     */
+    public void writeFilteredYaml(Map<String, Object> filteredData, String outputFilePath) throws IOException {
+        if (filteredData == null) return;
+        String yamlStr = toYaml(filteredData);
+        try (FileWriter writer = new FileWriter(outputFilePath)) {
+            writer.write(yamlStr);
+        }
     }
 }
