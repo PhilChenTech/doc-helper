@@ -20,26 +20,44 @@ import java.util.List;
 import java.util.Map;
 
 public class OpenApiToCsvConverter {
+//
+//  public static void convertRequest(Operation operation) throws IOException {
+//    // Handle Request Body
+//    RequestBody requestBody = operation.getRequestBody();
+//    if (requestBody != null && requestBody.get$ref() != null) {
+//      // Handle reference to request body
+//      String requestBodyName =
+//              requestBody.get$ref().substring("#/components/requestBodies/".length());
+//      requestBody = openAPI.getComponents().getRequestBodies().get(requestBodyName);
+//    }
+//
+//    if (requestBody != null && requestBody.getContent() != null) {
+//      Schema requestSchema = getSchemaFromContent(requestBody.getContent());
+//      if (requestSchema != null && requestSchema.get$ref() != null) {
+//        String schemaName = getSchemaNameFromRef(requestSchema.get$ref());
+//        Schema actualSchema = openAPI.getComponents().getSchemas().get(schemaName);
+//        generateCsvForSchema(actualSchema, schemaName + "Request");
+//      }
+//    }
+//
+//    // Handle Response Body
+//    ApiResponses responses = operation.getResponses();
+//    ApiResponse apiResponse = responses.get("200"); // Prefer 200
+//    if (apiResponse == null) {
+//      apiResponse = responses.get("201"); // Fallback to 201
+//    }
+//
+//    if (apiResponse != null && apiResponse.getContent() != null) {
+//      Schema responseSchema = getSchemaFromContent(apiResponse.getContent());
+//      if (responseSchema != null && responseSchema.get$ref() != null) {
+//        String schemaName = getSchemaNameFromRef(responseSchema.get$ref());
+//        Schema actualSchema = openAPI.getComponents().getSchemas().get(schemaName);
+//        generateCsvForSchema(actualSchema, schemaName + "Response");
+//      }
+//    }
+//  }
 
-  public static void convert(String filePath, String apiPath, String httpMethod) throws IOException {
-    OpenAPI openAPI = new OpenAPIV3Parser().read(filePath);
-    if (openAPI == null) {
-      System.err.println("Error parsing OpenAPI file: " + filePath);
-      return;
-    }
-
-    String method = httpMethod.toUpperCase();
-
-    PathItem pathItem = openAPI.getPaths().get(apiPath);
-    if (pathItem == null) {
-      System.err.println("API Path not found: " + apiPath);
-    }
-
-    Operation operation = getOperation(pathItem, method);
-    if (operation == null) {
-      System.err.println("HTTP Method not found for apiPath: " + method + " " + apiPath);
-    }
-
+  public static void convertRequest(Operation operation,OpenAPI openAPI) throws IOException {
     // Handle Request Body
     RequestBody requestBody = operation.getRequestBody();
     if (requestBody != null && requestBody.get$ref() != null) {
@@ -55,22 +73,6 @@ public class OpenApiToCsvConverter {
         String schemaName = getSchemaNameFromRef(requestSchema.get$ref());
         Schema actualSchema = openAPI.getComponents().getSchemas().get(schemaName);
         generateCsvForSchema(actualSchema, schemaName + "Request");
-      }
-    }
-
-    // Handle Response Body
-    ApiResponses responses = operation.getResponses();
-    ApiResponse apiResponse = responses.get("200"); // Prefer 200
-    if (apiResponse == null) {
-      apiResponse = responses.get("201"); // Fallback to 201
-    }
-
-    if (apiResponse != null && apiResponse.getContent() != null) {
-      Schema responseSchema = getSchemaFromContent(apiResponse.getContent());
-      if (responseSchema != null && responseSchema.get$ref() != null) {
-        String schemaName = getSchemaNameFromRef(responseSchema.get$ref());
-        Schema actualSchema = openAPI.getComponents().getSchemas().get(schemaName);
-        generateCsvForSchema(actualSchema, schemaName + "Response");
       }
     }
   }

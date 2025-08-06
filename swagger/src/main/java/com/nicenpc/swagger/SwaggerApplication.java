@@ -8,7 +8,7 @@ import java.io.IOException;
 public class SwaggerApplication {
 
     public static void main(String[] args) throws IOException {
-        OpenApiToCsvConverter.main(args);
+
     }
 
 }

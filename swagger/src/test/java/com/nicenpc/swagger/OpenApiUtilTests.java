@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class OpenApiUtilTests {
 
     private OpenApiUtil openApiUtil;
-    SchemaConverter schemaConverter = new SchemaConverter(new OpenAPI());
 
     @BeforeEach
     void setUp() {
